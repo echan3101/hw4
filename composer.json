@@ -1,0 +1,13 @@
+{
+    "name": "emilychan/hw4",
+    "description": "cs 174 HW 4: A simple tile server for maps and a command line tool for making tiles.",
+    "authors": [
+        {
+            "name": "Emily Chan",
+            "email": "emily.chan01@sjsu.edu"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^2.2"
+    }
+}
