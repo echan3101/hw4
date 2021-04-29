@@ -1,18 +1,11 @@
 <?php
 
-namespace emilychan\hw4\views;
 
-// Content type
-$im = @imagecreatetruecolor(200, 200)
-      or die('Cannot Initialize new GD image stream');
-header('Content-Type: image/jpeg');
-//Display on browser
-imagejpeg($im);
+var_dump($argv);
 
-//Save to images folder
-imagejpeg($im, 'images/blank.jpg');
-
-imagedestroy($im);
-
-
+// Get the arguments from command line
+// loop through each element in the $argv array
+foreach($argv as $value){
+  echo "$value\n";
+}
 ?>
