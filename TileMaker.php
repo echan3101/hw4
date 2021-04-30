@@ -55,8 +55,9 @@ if (!empty($argv[1])) {
   $newImg = imagecreatefromjpeg($argv[1]);
   imagejpeg($newImg, $temp);
 
-  createAll();
-  create16tiles();
+//  createAll();
+  //create16tiles();
+  create256tiles();
 
   //Delete temp.jpg
   unlink($temp);
@@ -81,7 +82,7 @@ function createAll(){
   }
 
   else {
-    echo "image does not exist";
+    echo "image does not exist.";
   }
 }
 
@@ -93,9 +94,9 @@ function create16tiles(){
   if(file_exists($file)){
 
     $image = imagecreatefromjpeg($file);
-    $i = 0;
 
-    while($i < 4){
+
+    for($i=0; $i < 4; $i++){
       for ($j = 0; $j <4; $j++){
         $image_p = imagecrop($image, ['x' => $j*200, 'y' => $i*200, 'width' => 200, 'height' => 200]);
         imagejpeg($image_p, 'images/'. $i . $j .'.jpg');
@@ -103,7 +104,6 @@ function create16tiles(){
 
       }
        $image_y += 200;
-       $i++;
 
     }
   }
@@ -112,38 +112,49 @@ function create16tiles(){
 // Creates 256 200px x 200px images of name a four digit number
 // where each digit is between 0 to 3 inclusive
 function create256tiles(){
-  $temp = "images/temp.jpg";
 
-  if(file_exists($temp)){
+    for($i = 0; $i < 4; $i++){
+      for ($j = 0; $j < 4; $j++){
 
-    list($width, $height) = getimagesize($temp);
+        $ij = "images/" . $i . $j . ".jpg";
 
-    $image_p = imagecreatetruecolor(800, 800);
-    $image = imagecreatefromjpeg($temp);
-    imagecopyresampled($image_p, $image, 0,0,0,0, 800, 800, $width, $height);
+        if(file_exists($ij)){
 
-    imagejpeg($image_p, 'images/all.jpg');
-    imagedestroy($image_p);
-  }
+          list($width, $height) = getimagesize($ij);
 
-  $file = "images/all.jpg";
+          $image_p = imagecreatetruecolor(800, 800);
+          $image = imagecreatefromjpeg($ij);
 
-  if(file_exists($file)){
+          imagecopyresampled($image_p, $image, 0,0,0,0, 800, 800, $width, $height);
 
-    $image = imagecreatefromjpeg($file);
-    $i = 0;
+          imagejpeg($image_p, "images/" . $i . $j . "temp.jpg");
+          imagedestroy($image_p);
 
-    while($i < 4){
-      for ($j = 0; $j <4; $j++){
-        $image_p = imagecrop($image, ['x' => $j*200, 'y' => $i*200, 'width' => 200, 'height' => 200]);
-        imagejpeg($image_p, 'images/'. $i . $j .'.jpg');
-        imagedestroy($image_p);
+        for ($n = 0; $n < 4; $n++){
+          for ($m = 0; $m < 4; $m++){
 
+            echo $i . $j . $n . $m;
+            echo "\n";
+
+            $image_p = imagecreatetruecolor(200, 200);
+
+            $image = imagecreatefromjpeg("images/" . $i . $j . "temp.jpg");
+
+            imagecopyresampled($image_p, $image, 0,0, $i*200 + $n*50, $j*200 + $m*50, 800, 800, 200, 200);
+
+          // $image_p = imagecrop($image, ['x' => $i*200 + $n*50, 'y' => $j*200 + $m*50, 'width' => 50, 'height' => 50]);
+            imagejpeg($image_p, 'test/'. $i . $n . $j . $m . '.jpg');
+
+            imagedestroy($image_p);
+            imagedestroy($image);
+
+
+          }
+        }
       }
-       $image_y += 200;
-       $i++;
-
     }
-  }
+
+
+}
 }
 ?>
